@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samsung Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="calculator">
+    <div id="header"> Calculator</div>
+
+    <input id="display" readonly>
+
+    <div id="keypad">
+      <button class="func" onclick="clearDisplay()">C</button>
+      <button class="func" onclick="deleteLast()">⌫</button>
+      <button class="func" onclick="appendToDisplay('%')">%</button>
+      <button class="op" onclick="appendToDisplay('/')">÷</button>
+      <button onclick="appendToDisplay('7')">7</button>
+      <button onclick="appendToDisplay('8')">8</button>
+      <button onclick="appendToDisplay('9')">9</button>
+      <button class="op" onclick="appendToDisplay('*')">×</button>
+      <button onclick="appendToDisplay('4')">4</button>
+      <button onclick="appendToDisplay('5')">5</button>
+      <button onclick="appendToDisplay('6')">6</button>
+      <button class="op" onclick="appendToDisplay('-')">−</button>
+      <button onclick="appendToDisplay('1')">1</button>
+      <button onclick="appendToDisplay('2')">2</button>
+      <button onclick="appendToDisplay('3')">3</button>
+      <button class="op" onclick="appendToDisplay('+')">+</button>
+      <button class="zero" onclick="appendToDisplay('0')">0</button>
+      <button onclick="appendToDisplay('.')">.</button>
+      <button class="equal" onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<script>
+const display = document.getElementById('display');
+let lastInput = '';
+
+function appendToDisplay(value) {
+  // ไม่ให้ใส่ operator ซ้ำ เช่น ++ หรือ */
+  const operators = ['+', '-', '*', '/', '%'];
+  if (operators.includes(value) && operators.includes(lastInput)) return;
+
+  display.value += value;
+  lastInput = value;
+}
+
+function clearDisplay() {
+  display.value = '';
+  lastInput = '';
+}
+
+function deleteLast() {
+  display.value = display.value.slice(0, -1);
+  lastInput = display.value.slice(-1);
+}
+
+function calculateResult() {
+  try {
+    let result = eval(display.value);
+    if (!isFinite(result)) throw new Error('Error');
+    display.value = result;
+  } catch {
+    display.value = 'Error';
+  }
+}
+</script>
+<style>
+    body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(160deg, #d7e6f5, #f1f5fa);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* กรอบเครื่องคิดเลข */
+#calculator {
+  background-color: #f9fafc;
+  border-radius: 25px;
+  width: 320px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* หัวเครื่องคิดเลข */
+#header {
+  background-color: #e9edf2;
+  color: #445566;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 15px 0;
+  letter-spacing: 0.5px;
+}
+
+/* หน้าจอแสดงผล */
+#display {
+  height: 90px;
+  border: none;
+  background-color: #f2f5fa;
+  color: #222;
+  font-size: 2.5rem;
+  text-align: right;
+  padding: 20px;
+  outline: none;
+  border-bottom: 1px solid #dde3ea;
+}
+
+/* พื้นที่ปุ่ม */
+#keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 15px;
+}
+
+/* ปุ่มทั้งหมด */
+button {
+  border: none;
+  border-radius: 50%;
+  height: 65px;
+  width: 65px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: #333;
+  background-color: #e9eef3;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1);
+  transition: all 0.15s ease;
+}
+
+button:hover {
+  background-color: #dbe3eb;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+/* ปุ่มเครื่องหมาย */
+.op {
+  background-color: #a4c8f0;
+  color: #fff;
+}
+.op:hover {
+  background-color: #8db7e8;
+}
+
+/* ปุ่มฟังก์ชัน */
+.func {
+  background-color: #cfd8e3;
+  color: #222;
+}
+
+/* ปุ่มเท่ากับ */
+.equal {
+  background-color: #5091ec;
+  color: white;
+}
+.equal:hover {
+  background-color: #3b7bd8;
+}
+
+/* ปุ่มศูนย์ */
+.zero {
+  grid-column: span 2;
+  border-radius: 40px;
+  width: 100%;
+}
+
+</style>
